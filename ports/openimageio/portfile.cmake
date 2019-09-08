@@ -10,6 +10,7 @@ vcpkg_from_github(
         fix_libraw.patch
         use-webp.patch
         remove_wrong_dependency.patch
+        findopenimageio_export_target.patch
 )
 
 file(REMOVE_RECURSE "${SOURCE_PATH}/ext")
@@ -57,11 +58,16 @@ vcpkg_configure_cmake(
         -DBUILD_MISSING_DEPS=OFF
         -DCMAKE_DISABLE_FIND_PACKAGE_Git=ON
         -DVERBOSE=ON
+    OPTIONS
+        -DINSTALL_CMAKE_MODULE_PATH=${CURRENT_PACKAGES_DIR}/share/openimageio
     OPTIONS_DEBUG
         -DOPENEXR_CUSTOM_LIB_DIR=${CURRENT_INSTALLED_DIR}/debug/lib
 )
 
 vcpkg_install_cmake()
+
+# Rename cmake module into a config in order to allow more flexible lookup rules
+file(RENAME ${CURRENT_PACKAGES_DIR}/share/openimageio/FindOpenImageIO.cmake ${CURRENT_PACKAGES_DIR}/share/openimageio/OpenImageIO-config.cmake)
 
 vcpkg_copy_pdbs()
 

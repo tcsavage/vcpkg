@@ -1,0 +1,30 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7f43455c..347eac75 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -403,7 +403,8 @@ if (SPI_TESTS)
+     URL "noplace -- it's SPI specific tests")
+ endif ()
+ 
+-
++install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/cmake/modules/FindOpenImageIO.cmake
++         DESTINATION ${INSTALL_CMAKE_MODULE_PATH})
+ 
+ #########################################################################
+ # Packaging
+diff --git a/src/cmake/modules/FindOpenImageIO.cmake b/src/cmake/modules/FindOpenImageIO.cmake
+index c835961b..581e6a07 100644
+--- a/src/cmake/modules/FindOpenImageIO.cmake
++++ b/src/cmake/modules/FindOpenImageIO.cmake
+@@ -92,3 +92,11 @@ mark_as_advanced (
+     OPENIMAGEIO_VERSION_MINOR
+     OPENIMAGEIO_VERSION_PATCH
+     )
++
++IF (NOT TARGET OpenImageIO::OpenImageIO)
++    add_library(OpenImageIO::OpenImageIO INTERFACE IMPORTED)
++    set_target_properties(OpenImageIO::OpenImageIO PROPERTIES
++         INTERFACE_INCLUDE_DIRECTORIES "${OPENIMAGEIO_INCLUDE_DIR}"
++         INTERFACE_LINK_LIBRARIES "${OPENIMAGEIO_LIBRARY}"
++    )
++ENDIF()

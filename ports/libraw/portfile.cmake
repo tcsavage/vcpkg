@@ -33,6 +33,7 @@ vcpkg_apply_patches(
     SOURCE_PATH ${SOURCE_PATH}
     PATCHES
         ${CMAKE_CURRENT_LIST_DIR}/findlibraw_debug_fix.patch
+        ${CMAKE_CURRENT_LIST_DIR}/findlibraw_export_targets.patch
         ${CMAKE_CURRENT_LIST_DIR}/lcms2_debug_fix.patch
 )
 
